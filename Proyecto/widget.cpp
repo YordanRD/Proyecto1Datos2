@@ -2,6 +2,7 @@
 #include "ui_widget.h"
 #include "localserver.h"
 #include <QMessageBox>
+#include <QString>
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -27,7 +28,25 @@ void Widget::on_Iniciar_clicked()
 
 void Widget::on_Compile_clicked()
 {
-    Mlocalserver->send(ui->Code->text());
+    QString code = ui->Code->text();
+    QString action;
+    if (code.contains("int")){
+        action = "int";
+    }else if (code.contains("long")){
+        action = "long";
+    }else if (code.contains("char")){
+        action = "char";
+    }else if (code.contains("float")){
+        action = "float";
+    }else if (code.contains("double")){
+        action = "double";
+    }else if (code.contains("struct")){
+        action = "struct";
+    }else if (code.contains("reference")){
+        action = "reference";
+    }
+    ui->Compiled->addItem(code);
+    Mlocalserver->send(action);
 }
 
 void Widget::on_Run_clicked()
