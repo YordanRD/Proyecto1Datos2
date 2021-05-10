@@ -1,0 +1,42 @@
+#include "widget.h"
+#include "ui_widget.h"
+#include "localserver.h"
+#include <QMessageBox>
+
+Widget::Widget(QWidget *parent)
+    : QWidget(parent)
+    , ui(new Ui::Widget)
+{
+    ui->setupUi(this);
+    Mlocalserver = new LocalServer(this);
+}
+
+Widget::~Widget()
+{
+    delete ui;
+}
+
+void Widget::on_Iniciar_clicked()
+{
+    if (!Mlocalserver->listen("MyLocalServer")){
+        QMessageBox::critical(this, "ERROR", Mlocalserver->errorString());
+    } else {
+        QMessageBox::information(this,"Server", "Starting...");
+    }
+}
+
+void Widget::on_Compile_clicked()
+{
+    Mlocalserver->send(ui->Code->text());
+}
+
+void Widget::on_Run_clicked()
+{
+
+}
+
+void Widget::on_Close_clicked()
+{
+    close();
+}
+
